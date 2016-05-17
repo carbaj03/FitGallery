@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">@dimen/margin_medium</dimen>
+    <dimen name="activity_vertical_margin">@dimen/margin_medium</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- MARGINS -->
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+
+    <!-- LIST ITEM -->
+    <dimen name="list_item_padding_right">@dimen/margin_medium</dimen>
+    <dimen name="list_item_padding_left">@dimen/margin_medium</dimen>
+    <dimen name="list_item_padding_top">@dimen/margin_small</dimen>
+    <dimen name="list_item_padding_bottom">@dimen/margin_small</dimen>
+
+    <dimen name="list_item_text_primary_size">16sp</dimen>
+
+    <dimen name="list_item_gallery_size">100dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">@dimen/margin_medium</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
+</resources>

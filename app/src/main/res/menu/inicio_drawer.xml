@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_galeria"
+            android:icon="@drawable/ic_photo_library_black_24dp"
+            android:title="@string/nav_gallery"/>
+
+    </group>
+
+    <item android:title="Datos">
+        <menu>
+            <item
+                android:id="@+id/nav_prefs"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="@string/nav_prefs"/>
+        </menu>
+    </item>
+
+</menu>

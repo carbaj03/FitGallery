@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Gallery</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_prefs">Preferences</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_order">Ordenar</string>
+    <string name="action_order_all">Todos</string>
+    <string name="action_order_per_day">Por Día</string>
+    <string name="action_order_per_week">Por Semana</string>
+    <string name="action_order_per_month">Por Mes</string>
+
+</resources>
