@@ -13,14 +13,15 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.acv.gallery.Album;
 import com.acv.gallery.GalleryApplication;
-import com.acv.gallery.Image;
 import com.acv.gallery.R;
 import com.acv.gallery.ui.adapter.GalleryAdapter;
 import com.acv.gallery.ui.fragment.module.GalleryListFragmentModule;
 import com.acv.gallery.ui.fragment.presenter.GalleryListFragmentPresenter;
 import com.acv.gallery.ui.listener.ItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,6 +32,8 @@ import butterknife.ButterKnife;
 public class GalleryListFragment extends BaseFragment implements ItemClickListener {
 
     public static final String TAG = GalleryListFragment.class.getSimpleName();
+
+    private static final String ARG_GALLERY = "GALLERY";
 
     private static final int SUB_MENU_ALL = 11;
     private static final int SUB_MENU_PER_DAY = 21;
@@ -51,6 +54,12 @@ public class GalleryListFragment extends BaseFragment implements ItemClickListen
 
     public static Fragment newInstance() {
         return new GalleryListFragment();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(ARG_GALLERY, (ArrayList<Album>)galleryAdapter.getItems());
     }
 
     @Override
@@ -76,11 +85,15 @@ public class GalleryListFragment extends BaseFragment implements ItemClickListen
     }
 
     private void getData(Bundle savedInstanceState){
-        presenter.loadImages();
+        if (savedInstanceState != null)
+            setImages(savedInstanceState.getParcelableArrayList(ARG_GALLERY));
+        else
+            presenter.loadImages();
     }
 
     private void setRecyclerView() {
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(galleryAdapter);
     }
@@ -153,6 +166,10 @@ public class GalleryListFragment extends BaseFragment implements ItemClickListen
 
     @Override
     public void onItemClick(View view, int position) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, AlbumListFragment.newInstance(galleryAdapter.getItem(position)), AlbumListFragment.TAG)
+                .addToBackStack(AlbumListFragment.TAG)
+                .commit();
     }
 
     public void showLoading(boolean loading) {
@@ -160,8 +177,8 @@ public class GalleryListFragment extends BaseFragment implements ItemClickListen
         cLProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
-    public void setImages(List<Image> images) {
-        galleryAdapter.setItems(images);
+    public void setImages(List<Album> albums) {
+        galleryAdapter.setItems(albums);
     }
 
 }

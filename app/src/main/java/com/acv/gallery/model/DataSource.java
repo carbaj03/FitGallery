@@ -9,9 +9,12 @@ import rx.Observable;
 
 public interface DataSource {
 
-    Observable<List<Image>> getImages();
-    Observable<List<Image>> getImagesPerDay();
-    Observable<List<Image>> getImagesPerWeek();
-    Observable<List<Image>> getImagesPerMonth();
+    Observable<List<Album>> getAlbums();
+    Observable<List<Album>> getAlbumsPerDay();
+    Observable<List<Album>> getAlbumsPerWeek();
+    Observable<List<Album>> getAlbumsPerMonth();
 
+    Observable<List<Image>> getImages(Album album);
+
+    Observable<Image> getImage(Image image);
 }

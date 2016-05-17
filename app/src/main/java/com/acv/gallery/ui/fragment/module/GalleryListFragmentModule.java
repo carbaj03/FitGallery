@@ -5,7 +5,6 @@ import com.acv.gallery.ui.adapter.GalleryAdapter;
 import com.acv.gallery.ui.fragment.FragmentScope;
 import com.acv.gallery.ui.fragment.GalleryListFragment;
 import com.acv.gallery.ui.fragment.presenter.GalleryListFragmentPresenter;
-import com.acv.gallery.util.FileUtil;
 import com.acv.gallery.util.ImageLoader;
 
 import dagger.Module;

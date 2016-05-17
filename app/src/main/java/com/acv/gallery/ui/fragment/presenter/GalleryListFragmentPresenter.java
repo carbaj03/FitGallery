@@ -1,6 +1,6 @@
 package com.acv.gallery.ui.fragment.presenter;
 
-import com.acv.gallery.Image;
+import com.acv.gallery.Album;
 import com.acv.gallery.model.DataSource;
 import com.acv.gallery.ui.fragment.GalleryListFragment;
 
@@ -23,30 +23,30 @@ public class GalleryListFragmentPresenter {
 
     public void loadImages() {
         characterListFragment.showLoading(true);
-        load(dataSource.getImages());
+        load(dataSource.getAlbums());
     }
 
     public void loadImagesPerDay() {
         characterListFragment.showLoading(true);
-        load(dataSource.getImagesPerDay());
+        load(dataSource.getAlbumsPerDay());
     }
 
     public void loadImagesPerWeek() {
-//        characterListFragment.showLoading(true);
-//        load(dataSource.getImagesPerWeek());
+        characterListFragment.showLoading(true);
+        load(dataSource.getAlbumsPerWeek());
     }
 
     public void loadImagesPerMonth() {
-//        characterListFragment.showLoading(true);
-//        load(dataSource.getImagesPerMonth());
+        characterListFragment.showLoading(true);
+        load(dataSource.getAlbumsPerMonth());
     }
 
-    private void load(Observable<List<Image>> images){
-        images.subscribeOn(Schedulers.io())
+    private void load(Observable<List<Album>> albums){
+        albums.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Image>>() {
+                .subscribe(new Action1<List<Album>>() {
                     @Override
-                    public void call(List<Image> images) {
+                    public void call(List<Album> images) {
                         characterListFragment.showLoading(false);
                         characterListFragment.setImages(images);
                     }

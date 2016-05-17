@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.acv.gallery.model.AlbumDataSource;
 import com.acv.gallery.model.DataSource;
-import com.acv.gallery.model.LocalDataSource;
 import com.acv.gallery.util.DateUtil;
 import com.acv.gallery.util.FileUtil;
 import com.acv.gallery.util.ImageLoader;
@@ -61,7 +61,7 @@ public class AppModule {
 
     @Provides @Singleton
     DataSource provideDataSource(FileUtil fileUtil){
-        return new LocalDataSource(fileUtil);
+        return new AlbumDataSource(fileUtil);
     }
 
 }
