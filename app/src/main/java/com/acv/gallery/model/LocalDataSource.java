@@ -1,6 +1,6 @@
 //package com.acv.gallery.model;
 //
-//import com.acv.gallery.Image;
+//import com.acv.gallery.model.Image;
 //import com.acv.gallery.util.FileUtil;
 //
 //import java.io.File;
@@ -24,7 +24,7 @@
 //    public Observable<List<File>> getFiles()  {
 //        return Observable.create(subscriber -> {
 //            try {
-//                this.files = fileUtil.getImages();
+//                this.files = fileUtil.loadImages();
 //                subscriber.onNext(files);
 //                subscriber.onCompleted();
 //            }catch (Exception ex){
@@ -33,7 +33,7 @@
 //        });
 //    }
 //
-//    public Observable<List<Image>> getImages(){
+//    public Observable<List<Image>> loadImages(){
 //        return getFiles()
 //                .map(new Func1<List<File>, List<Image>>() {
 //                    @Override

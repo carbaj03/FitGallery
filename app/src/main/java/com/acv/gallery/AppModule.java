@@ -3,9 +3,10 @@ package com.acv.gallery;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-import com.acv.gallery.model.AlbumDataSource;
-import com.acv.gallery.model.DataSource;
+import com.acv.gallery.repository.LocalGalleryRepositoryImpl;
+import com.acv.gallery.repository.GalleryRepository;
 import com.acv.gallery.util.DateUtil;
 import com.acv.gallery.util.FileUtil;
 import com.acv.gallery.util.ImageLoader;
@@ -30,13 +31,13 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    public Application provideApplication() {
+    public Context provideContext() {
         return application;
     }
 
     @Provides @Singleton
-    Picasso providePicasso() {
-        return new Picasso.Builder(application).loggingEnabled(true).build();
+    Picasso providePicasso(Context context) {
+        return new Picasso.Builder(context).loggingEnabled(true).build();
     }
 
     @Provides @Singleton
@@ -45,8 +46,8 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    SharedPreferences providePreferences(){
-        return application.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+    SharedPreferences providePreferences(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Provides @Singleton
@@ -60,8 +61,8 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    DataSource provideDataSource(FileUtil fileUtil){
-        return new AlbumDataSource(fileUtil);
+    GalleryRepository provideDataSource(FileUtil fileUtil){
+        return new LocalGalleryRepositoryImpl(fileUtil);
     }
 
 }

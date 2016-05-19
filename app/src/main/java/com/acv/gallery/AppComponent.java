@@ -1,13 +1,13 @@
 package com.acv.gallery;
 
-import com.acv.gallery.ui.activity.component.MainActivityComponent;
-import com.acv.gallery.ui.activity.module.MainActivityModule;
-import com.acv.gallery.ui.fragment.component.AlbumListFragmentComponent;
-import com.acv.gallery.ui.fragment.component.GalleryListFragmentComponent;
-import com.acv.gallery.ui.fragment.component.ImageFragmentComponent;
-import com.acv.gallery.ui.fragment.module.AlbumListFragmentModule;
-import com.acv.gallery.ui.fragment.module.GalleryListFragmentModule;
-import com.acv.gallery.ui.fragment.module.ImageFragmentModule;
+import com.acv.gallery.view.activity.component.MainActivityComponent;
+import com.acv.gallery.view.activity.module.MainActivityModule;
+import com.acv.gallery.view.fragment.component.AlbumListFragmentComponent;
+import com.acv.gallery.view.fragment.component.GalleryListFragmentComponent;
+import com.acv.gallery.view.fragment.component.ImageFragmentComponent;
+import com.acv.gallery.view.fragment.module.AlbumViewModule;
+import com.acv.gallery.view.fragment.module.GalleryViewModule;
+import com.acv.gallery.view.fragment.module.PhotoViewModule;
 
 import javax.inject.Singleton;
 
@@ -23,10 +23,10 @@ public interface AppComponent {
 
     MainActivityComponent plus(MainActivityModule module);
 
-    GalleryListFragmentComponent plus(GalleryListFragmentModule module);
+    GalleryListFragmentComponent plus(GalleryViewModule module);
 
-    AlbumListFragmentComponent plus(AlbumListFragmentModule module);
+    AlbumListFragmentComponent plus(AlbumViewModule module);
 
-    ImageFragmentComponent plus(ImageFragmentModule module);
+    ImageFragmentComponent plus(PhotoViewModule module);
 
 }

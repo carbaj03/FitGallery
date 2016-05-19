@@ -23,6 +23,7 @@ public class ImageLoaderImpl implements ImageLoader {
 
     @Override
     public void loadFull(String url, ImageView imageView) {
-        picasso.load(url).error(R.drawable.ic_photo_camera_white_24dp).fit().centerCrop().into(imageView);
+        picasso.load(url).error(R.drawable.ic_photo_camera_white_24dp).fit().centerInside().into(imageView);
     }
 }
+
