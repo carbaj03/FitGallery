@@ -5,6 +5,7 @@ import com.acv.gallery.repository.GalleryRepository;
 import com.acv.gallery.view.PhotoView;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -13,6 +14,7 @@ public class PhotoPresenterImpl implements PhotoPresenter {
 
     private PhotoView photoView;
     private GalleryRepository dataSource;
+    private Subscription subscription;
 
     public PhotoPresenterImpl(PhotoView photoView, GalleryRepository dataSource) {
         this.photoView = photoView;
@@ -25,19 +27,13 @@ public class PhotoPresenterImpl implements PhotoPresenter {
     }
 
     private void load(Observable<Image> image){
-        image.subscribeOn(Schedulers.io())
+        subscription = image.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Image>() {
-                    @Override
-                    public void call(Image image) {
-                        photoView.displayLoading(false);
-                        photoView.displayImage(image);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable error) {
-                        photoView.displayLoading(false);
-                    }
+                .subscribe(image1 -> {
+                    photoView.displayLoading(false);
+                    photoView.displayImage(image1);
+                }, error -> {
+                    photoView.displayLoading(false);
                 });
     }
 

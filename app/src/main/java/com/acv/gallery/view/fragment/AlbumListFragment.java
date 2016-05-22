@@ -13,12 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.acv.gallery.model.Album;
 import com.acv.gallery.GalleryApplication;
-import com.acv.gallery.model.Image;
 import com.acv.gallery.R;
+import com.acv.gallery.model.Album;
+import com.acv.gallery.model.Image;
 import com.acv.gallery.presenter.AlbumPresenter;
 import com.acv.gallery.view.AlbumView;
+import com.acv.gallery.view.activity.ImageDetailActivity;
 import com.acv.gallery.view.adapter.AlbumAdapter;
 import com.acv.gallery.view.fragment.module.AlbumViewModule;
 import com.acv.gallery.view.listener.ItemClickListener;
@@ -42,9 +43,11 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
     RecyclerView recyclerView;
 
     @Inject
-    AlbumAdapter albumAdapter;
+    AlbumAdapter adapter;
     @Inject
     AlbumPresenter presenter;
+
+    private Menu menu;
 
     public static Fragment newInstance(Album album) {
         Fragment fragment = new AlbumListFragment();
@@ -67,7 +70,7 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
         presenter.loadImages(getAlbum());
     }
 
-    private Album getAlbum(){
+    private Album getAlbum() {
         return getArguments() == null ? null : getArguments().getParcelable(ARG_ALBUM);
     }
 
@@ -75,7 +78,7 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
-        albumAdapter.setItemClickListener(this);
+        adapter.setItemClickListener(this);
         setRecyclerView();
         return rootView;
     }
@@ -84,7 +87,7 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(albumAdapter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -96,34 +99,80 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.gallery, menu);
+        this.menu = menu;
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
 
-            return true;
+                return true;
+
+            case R.id.action_delete:
+                adapter.changeState();
+                changeMenu();
+                return true;
+
+            case R.id.action_accept:
+                adapter.changeState();
+                accept();
+                return true;
+
+            case R.id.action_cancel:
+                adapter.changeState();
+                cancel();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, PhotoFragment.newInstance(albumAdapter.getItem(position)), PhotoFragment.TAG)
-                .addToBackStack(PhotoFragment.TAG)
-                .commit();
+    private void changeMenu() {
+        if (adapter.isMultiSelectActive()) {
+            menu.setGroupVisible(R.id.action_group_multi, true);
+            menu.setGroupVisible(R.id.action_group_simple, false);
+        } else {
+            menu.setGroupVisible(R.id.action_group_multi, false);
+            menu.setGroupVisible(R.id.action_group_simple, true);
+        }
     }
 
-    @Override public void displayLoading(boolean loading) {
+    private void accept() {
+        actionAccept();
+        changeMenu();
+    }
+
+    private void cancel() {
+        changeMenu();
+    }
+
+    private void actionAccept() {
+        presenter.deleteImages(adapter.getCheckedItems());
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if (!adapter.isMultiSelectActive())
+            ImageDetailActivity.launch(getActivity(), adapter.getItems(), position);
+        else
+            adapter.changeState(position);
+    }
+
+    @Override
+    public void displayLoading(boolean loading) {
         recyclerView.setVisibility(loading ? View.GONE : View.VISIBLE);
         cLProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
-    @Override public void displayImages(List<Image> images) {
-        albumAdapter.setItems(images);
+    @Override
+    public void displayImages(List<Image> images) {
+        adapter.setItems(images);
+    }
+
+    @Override
+    public void removeImages() {
+        adapter.removeChecked();
     }
 
     @Override
@@ -131,4 +180,13 @@ public class AlbumListFragment extends BaseFragment implements AlbumView, ItemCl
         Toast.makeText(getActivity(), "No se ha encontrado el album", Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void showDeleteSuccess() {
+        Toast.makeText(getActivity(), "Imágenes eliminadas con éxito", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDeleteError(String error) {
+        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+    }
 }

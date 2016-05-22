@@ -3,6 +3,7 @@ package com.acv.gallery.repository;
 import com.acv.gallery.model.Album;
 import com.acv.gallery.model.Image;
 
+import java.io.IOException;
 import java.util.List;
 
 import rx.Observable;
@@ -17,4 +18,6 @@ public interface GalleryRepository {
     Observable<List<Image>> getImages(Album album);
 
     Observable<Image> getImage(Image image);
+
+    void delete(List<Image> images) throws IOException;
 }

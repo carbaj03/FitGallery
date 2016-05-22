@@ -13,36 +13,33 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.acv.gallery.GalleryApplication;
-import com.acv.gallery.model.Image;
 import com.acv.gallery.R;
+import com.acv.gallery.model.Image;
 import com.acv.gallery.presenter.PhotoPresenter;
+import com.acv.gallery.util.ImageLoader;
 import com.acv.gallery.view.PhotoView;
 import com.acv.gallery.view.fragment.module.PhotoViewModule;
-import com.acv.gallery.util.ImageLoader;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PhotoFragment extends BaseFragment implements PhotoView {
+public class ImageDetailFragment extends BaseFragment implements PhotoView {
 
-    public static final String TAG = PhotoFragment.class.getSimpleName();
+    public static final String TAG = ImageDetailFragment.class.getSimpleName();
 
     private static final String ARG_IMAGE = "IMAGE";
 
-    @BindView(R.id.cLProgressBar)
-    ContentLoadingProgressBar cLProgressBar;
-    @BindView(R.id.imageView)
-    ImageView imageView;
+    @BindView(R.id.cLProgressBar) ContentLoadingProgressBar cLProgressBar;
+    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.layout_parent) View viewParent;
 
-    @Inject
-    PhotoPresenter presenter;
-    @Inject
-    ImageLoader imageLoader;
+    @Inject PhotoPresenter presenter;
+    @Inject ImageLoader imageLoader;
 
     public static Fragment newInstance(Image image) {
-        Fragment fragment = new PhotoFragment();
+        Fragment fragment = new ImageDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_IMAGE, image);
         fragment.setArguments(args);
@@ -90,14 +87,17 @@ public class PhotoFragment extends BaseFragment implements PhotoView {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.gallery, menu);
+        inflater.inflate(R.menu.image_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_search:
+        case R.id.action_delete:
+
+            return true;
+        case R.id.action_compare:
 
             return true;
         }
@@ -113,7 +113,7 @@ public class PhotoFragment extends BaseFragment implements PhotoView {
 
     @Override
     public void displayImage(Image image) {
-        imageLoader.loadFull(image.getUrl(), imageView);
+        imageLoader.loadFull(image.getUrl(), imageView, viewParent);
     }
 
     @Override

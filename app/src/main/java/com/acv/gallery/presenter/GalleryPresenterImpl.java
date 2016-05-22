@@ -7,6 +7,7 @@ import com.acv.gallery.view.GalleryView;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -15,6 +16,7 @@ public class GalleryPresenterImpl implements GalleryPresenter {
 
     private GalleryView view;
     private GalleryRepository repository;
+    private Subscription subscription;
 
     public GalleryPresenterImpl(GalleryView view, GalleryRepository repository) {
         this.view = view;
@@ -42,20 +44,18 @@ public class GalleryPresenterImpl implements GalleryPresenter {
     }
 
     private void load(Observable<List<Album>> albums){
-        albums.subscribeOn(Schedulers.io())
+        subscription = albums.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Album>>() {
-                    @Override
-                    public void call(List<Album> albums) {
-                        view.displayLoading(false);
-                        view.displayGallery(albums);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable error) {
-                        view.displayLoading(false);
-                    }
+                .subscribe(gallery -> {
+                    view.displayLoading(false);
+                    view.displayGallery(gallery);
+                }, error -> {
+                    view.displayLoading(false);
                 });
     }
 
+    @Override
+    public void onDestroy() {
+        if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
+    }
 }

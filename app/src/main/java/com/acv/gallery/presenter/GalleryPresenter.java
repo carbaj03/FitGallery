@@ -1,6 +1,6 @@
 package com.acv.gallery.presenter;
 
-public interface GalleryPresenter {
+public interface GalleryPresenter extends LifeCyclePresenter {
     void loadAlbums();
 
     void loadAlbumsPerDay();

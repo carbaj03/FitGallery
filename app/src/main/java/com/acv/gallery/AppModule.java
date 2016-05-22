@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.acv.gallery.repository.LocalGalleryRepositoryImpl;
+import com.acv.gallery.repository.LocalGalleryRepository;
 import com.acv.gallery.repository.GalleryRepository;
 import com.acv.gallery.util.DateUtil;
 import com.acv.gallery.util.FileUtil;
+import com.acv.gallery.util.GlideImageLoader;
 import com.acv.gallery.util.ImageLoader;
-import com.acv.gallery.util.ImageLoaderImpl;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Singleton;
@@ -41,8 +41,8 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    ImageLoader provideImageLoader(Picasso picasso) {
-        return new ImageLoaderImpl(picasso);
+    ImageLoader provideImageLoader() {
+        return new GlideImageLoader();
     }
 
     @Provides @Singleton
@@ -62,7 +62,7 @@ public class AppModule {
 
     @Provides @Singleton
     GalleryRepository provideDataSource(FileUtil fileUtil){
-        return new LocalGalleryRepositoryImpl(fileUtil);
+        return new LocalGalleryRepository(fileUtil);
     }
 
 }

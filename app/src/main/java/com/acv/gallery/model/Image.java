@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.acv.gallery.util.DateUtil;
 
+import java.io.File;
 import java.util.Date;
 
 
@@ -31,6 +32,10 @@ public class Image implements Parcelable {
         return url;
     }
 
+    public File toFile(){
+        return new File(url);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -44,7 +49,7 @@ public class Image implements Parcelable {
 
     protected Image(Parcel in) {
         url = in.readString();
-        date.setTime(in.readLong());
+        date = new Date(in.readLong());
     }
 
     public static final Parcelable.Creator<Image> CREATOR = new Creator<Image>() {

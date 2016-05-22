@@ -19,7 +19,7 @@ public class GalleryViewHolder extends BaseHolder<Album> {
     public GalleryViewHolder(View itemView, ItemClickListener listener, ImageLoader imageLoader) {
         super(itemView, listener);
         ivBackground = (ImageView) itemView.findViewById(R.id.ivBackground);
-        tvName = (TextView) itemView.findViewById(R.id.tv_name);
+        tvName = (TextView) itemView.findViewById(R.id.tvName);
         itemView.setOnClickListener(this);
         this.imageLoader = imageLoader;
     }

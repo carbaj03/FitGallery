@@ -1,7 +1,7 @@
 package com.acv.gallery.view.fragment.component;
 
 import com.acv.gallery.view.fragment.FragmentScope;
-import com.acv.gallery.view.fragment.PhotoFragment;
+import com.acv.gallery.view.fragment.ImageDetailFragment;
 import com.acv.gallery.view.fragment.module.PhotoViewModule;
 
 import dagger.Subcomponent;
@@ -10,8 +10,8 @@ import dagger.Subcomponent;
 @Subcomponent(
         modules = PhotoViewModule.class
 )
-public interface ImageFragmentComponent {
+public interface PhotoFragmentComponent {
 
-    PhotoFragment inject(PhotoFragment imageFragment);
+    ImageDetailFragment inject(ImageDetailFragment imageFragment);
 
 }

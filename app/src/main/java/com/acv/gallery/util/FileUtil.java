@@ -3,6 +3,7 @@ package com.acv.gallery.util;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +38,13 @@ public class FileUtil {
 				fileName.endsWith(JPG_EXTENSION.toUpperCase()) ||
 				fileName.endsWith(PNG_EXTENSION) ||
 				fileName.endsWith(GIF_EXTENSION);
+	}
+
+	public void eliminarFicheros(List<File> pArrFile) throws IOException {
+		int lIntMax = pArrFile.size();
+		for (int i = 0; i < lIntMax; i++) {
+			if(!pArrFile.get(i).delete())
+				throw new IOException("Error al eliminar imagen: " + pArrFile.get(i).getName());
+		}
 	}
 }

@@ -8,6 +8,9 @@ import java.util.List;
 public interface AlbumView {
     void displayLoading(boolean show);
     void displayImages(List<Image> images);
+    void removeImages();
 
     void showAlbumEmpty();
+    void showDeleteSuccess();
+    void showDeleteError(String error);
 }

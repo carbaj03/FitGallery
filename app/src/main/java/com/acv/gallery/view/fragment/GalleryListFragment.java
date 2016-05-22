@@ -38,43 +38,36 @@ public class GalleryListFragment extends BaseFragment implements GalleryView, It
     private static final String ARG_GALLERY = "GALLERY";
 
     public static final int SUB_MENU_ALL = 11;
-    public static final int SUB_MENU_PER_DAY = 21;
-    public static final int SUB_MENU_PER_WEEK = 31;
-    public static final int SUB_MENU_PER_MOTH = 41;
+    public static final int SUB_MENU_PER_DAY = 12;
+    public static final int SUB_MENU_PER_WEEK = 13;
+    public static final int SUB_MENU_PER_MOTH = 14;
 
     private int groupBy = SUB_MENU_ALL;
 
-    @BindView(R.id.cLProgressBar)
-    ContentLoadingProgressBar cLProgressBar;
-    @BindView(R.id.recylerView)
-    RecyclerView recyclerView;
+    @BindView(R.id.cLProgressBar) ContentLoadingProgressBar cLProgressBar;
+    @BindView(R.id.recylerView) RecyclerView recyclerView;
 
-    @Inject
-    GalleryAdapter galleryAdapter;
-    @Inject
-    GalleryPresenter presenter;
+    @Inject GalleryAdapter galleryAdapter;
+    @Inject GalleryPresenter presenter;
 
     public static Fragment newInstance() {
         return new GalleryListFragment();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+    @Override protected void setupActivityComponent() {
+        GalleryApplication.get(getActivity()).getAppComponent()
+                .plus(new GalleryViewModule(this))
+                .inject(this);
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(ARG_GALLERY, (ArrayList<Album>)galleryAdapter.getItems());
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         presenter.loadAlbums();
-    }
-
-    @Override
-    protected void setupActivityComponent() {
-        GalleryApplication.get(getActivity()).getAppComponent()
-                .plus(new GalleryViewModule(this))
-                .inject(this);
     }
 
     @Override
@@ -86,33 +79,29 @@ public class GalleryListFragment extends BaseFragment implements GalleryView, It
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
     private void setRecyclerView() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(galleryAdapter);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedState) {
+    @Override public void onActivityCreated(Bundle savedState) {
         super.onActivityCreated(savedState);
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.gallery, menu);
         setMenu(menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_search:
 
@@ -126,17 +115,17 @@ public class GalleryListFragment extends BaseFragment implements GalleryView, It
             case SUB_MENU_PER_DAY:
                 item.setChecked(true);
                 groupBy = item.getItemId();
-                presenter.loadAlbums();
+                presenter.loadAlbumsPerDay();
                 return true;
             case SUB_MENU_PER_WEEK:
                 item.setChecked(true);
                 groupBy = item.getItemId();
-                presenter.loadAlbums();
+                presenter.loadAlbumsPerWeek();
                 return true;
             case SUB_MENU_PER_MOTH:
                 item.setChecked(true);
                 groupBy = item.getItemId();
-                presenter.loadAlbums();
+                presenter.loadAlbumsPerMonth();
                 return true;
         }
 
@@ -153,8 +142,7 @@ public class GalleryListFragment extends BaseFragment implements GalleryView, It
         subMenu.findItem(groupBy).setChecked(true);
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
+    @Override public void onItemClick(View view, int position) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, AlbumListFragment.newInstance(galleryAdapter.getItem(position)), AlbumListFragment.TAG)
                 .addToBackStack(AlbumListFragment.TAG)
@@ -170,9 +158,8 @@ public class GalleryListFragment extends BaseFragment implements GalleryView, It
         galleryAdapter.setItems(albums);
     }
 
-    @Override
-    public int getGroupBy() {
-        return groupBy;
+    @Override public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
-
 }

@@ -7,7 +7,11 @@
     <string name="nav_gallery">Gallery</string>
     <string name="nav_prefs">Preferences</string>
 
+    <string name="action_accept">Accept</string>
+    <string name="action_cancel">Cancel</string>
     <string name="action_search">Search</string>
+    <string name="action_compare">Compare</string>
+    <string name="action_delete">Delete</string>
     <string name="action_order">Ordenar</string>
     <string name="action_order_all">Todos</string>
     <string name="action_order_per_day">Por Día</string>

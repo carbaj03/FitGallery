@@ -11,7 +11,7 @@ import com.acv.gallery.util.ImageLoader;
 
 import java.util.List;
 
-public class AlbumAdapter extends BaseAdapter<Image> {
+public class AlbumAdapter extends MultiSelectAdapter<Image> {
 
     private static final int layout = R.layout.image_item;
 
@@ -29,7 +29,7 @@ public class AlbumAdapter extends BaseAdapter<Image> {
 
     @Override
     public Image getItem(int position) {
-        return mData.get(position);
+        return (Image) mData.get(position);
     }
 
     @Override
@@ -41,6 +41,10 @@ public class AlbumAdapter extends BaseAdapter<Image> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         AlbumViewHolder imageViewHolder = (AlbumViewHolder) holder;
-        imageViewHolder.render(mData.get(position));
+
+        if(isMultiSelectActive())
+            imageViewHolder.render((Image) mData.get(position), isChecked(position));
+        else
+            imageViewHolder.render((Image) mData.get(position));
     }
 }
